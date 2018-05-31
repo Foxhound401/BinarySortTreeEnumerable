@@ -1,28 +1,32 @@
 ﻿using System;
 using System.Collections;
 
-namespace BST_Enumerable
+namespace BinarySortTreeEnumerable
 {
-    class Program
+    class BinarySortTree
     {
-        static BST initBST()
+        static BinarySortTreeComponent createBinaryTree()
         {
-            BST myBST = new BST();
+            // Khoi tao cay nhi phan
+            BinarySortTreeComponent binarytree = new BinarySortTreeComponent();
+
+            // Thuc hien random 10 so bat ki vao cay nhi phan vua tao
             Random rand = new Random();
             Console.WriteLine("Init value: ");
             for (int i = 1; i <= 10; i++)
             {
-                int val = rand.Next(1, 100);
-                Console.Write(val + " ");
-                myBST.Add(val);
+                int value = rand.Next(1, 100);
+                Console.Write(value + " ");
+                binarytree.Add(value);
             }
             Console.WriteLine();
-            return myBST;
+            return binarytree;
         }
 
-        static void LNR(BST myBST)
+        // sap xep tu thap den cao theo LEFT NODE RIGHT
+        static void LeftNodeRight(BinarySortTreeComponent myBST)
         {
-            Console.WriteLine("LNR order: ");
+            Console.WriteLine("LeftNodeRight order: ");
             myBST.ResetEnumerator(false);
             foreach (var node in myBST)
             {
@@ -31,7 +35,8 @@ namespace BST_Enumerable
             Console.WriteLine();
         }
 
-        static void RNL(BST myBST)
+        //sap xep theo tu cao xuong thap RIGHT NODE LEFT
+        static void RightNodeLeft(BinarySortTreeComponent myBST)
         {
             Console.WriteLine("RNL order: ");
             myBST.ResetEnumerator(true);
@@ -44,21 +49,24 @@ namespace BST_Enumerable
 
         static void Main(string[] args)
         {
-            BST myBST = initBST();
-            Console.WriteLine("------");
-            LNR(myBST);
-            Console.WriteLine("------");
-            RNL(myBST);
+            BinarySortTreeComponent binarytree = createBinaryTree();
+
+            Console.WriteLine();
+            LeftNodeRight(binarytree);
+
+            Console.WriteLine();
+            RightNodeLeft(binarytree);
             Console.ReadLine();
         }
     }
 
-    class BST : IEnumerable
+    class BinarySortTreeComponent : IEnumerable
     {
-        private Node Root;
-        private BSTEnumerator MyEnumerator;
 
-        public BST()
+        private Node Root;
+        private BinarySortTreeEnumerator Enumerator;
+
+        public BinarySortTreeComponent()
         {
             Root = null;
         }
@@ -68,7 +76,7 @@ namespace BST_Enumerable
             if (Root == null)
             {
                 Root = new Node(value);
-                MyEnumerator = new BSTEnumerator(Root, false);
+                Enumerator = new BinarySortTreeEnumerator(Root, false);
                 return true;
             }
 
@@ -103,22 +111,22 @@ namespace BST_Enumerable
 
         public void ResetEnumerator(bool reverse)
         {
-            MyEnumerator.Reset();
-            MyEnumerator.Reverse = reverse;
+            Enumerator.Reset();
+            Enumerator.Reverse = reverse;
         }
 
         public IEnumerator GetEnumerator()
         {
-            return MyEnumerator;
+            return Enumerator;
         }
 
-        class BSTEnumerator : IEnumerator
+        class BinarySortTreeEnumerator : IEnumerator
         {
             private Node Root { get; set; }
             private Node CurNode { get; set; }
             public bool Reverse { get; set; }
 
-            public BSTEnumerator(Node root, bool reverse)
+            public BinarySortTreeEnumerator(Node root, bool reverse)
             {
                 Root = root;
                 CurNode = root;
